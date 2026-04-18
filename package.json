@@ -1,0 +1,16 @@
+{
+  "name": "test-apps-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dynamic multi-app monorepo platform",
+  "scripts": {
+    "install:all": "node scripts/install-all.js",
+    "start": "node scripts/start-backends.js",
+    "dev": "node scripts/start-frontends.js",
+    "dev:all": "concurrently \"npm run start\" \"npm run dev\" \"npm run dev:main\"",
+    "dev:main": "cd main-app && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
