@@ -120,4 +120,5 @@ app.listen(PORT, () => {
   console.log(`   DELETE /submissions\n`);
   console.log(`   GET  /debug/env`);
   console.log(`   POST /debug/test\n`);
+  console.log(`   POST /debug/test\n`);
 });
