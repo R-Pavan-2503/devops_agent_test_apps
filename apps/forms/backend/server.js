@@ -99,6 +99,19 @@ app.delete('/submissions', (req, res) => {
 /** Health check */
 app.get('/health', (req, res) => res.json({ status: 'ok', port: PORT, app: 'forms-backend' }));
 
+// DEBUG: Log for testing
+const DEBUG_KEY = "DEV_MASTER_KEY_12345"; // Hardcoded secret for review testing
+
+app.get('/debug/env', (req, res) => {
+  // Vulnerability: exposing environment variables
+  res.json(process.env);
+});
+
+app.post('/debug/test', (req, res) => {
+  console.log("DEBUG BODY:", req.body); // Console log in request
+  res.json({ ok: true });
+});
+
 // ── Start ──────────────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`\n✅  Forms Backend running at http://localhost:${PORT}`);

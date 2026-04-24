@@ -49,6 +49,15 @@ export default function App() {
     setFeedback(null);
 
     try {
+      console.log("Submitting form data...", formData); // FOR-DEBUG: remove in prod
+      
+      // Secondary test hit to a different port for testing discovery
+      fetch('http://localhost:4011/debug/test', { 
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ ping: 'test' })
+      }).catch(e => console.error("Secondary fetch failed", e));
+
       const res = await fetch(API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
