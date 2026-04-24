@@ -5,7 +5,8 @@
   "port": 4001,
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "test": "node --check server.js && echo 'Syntax OK'"
   },
   "dependencies": {
     "cors": "^2.8.5",

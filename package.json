@@ -8,7 +8,8 @@
     "start": "node scripts/start-backends.js",
     "dev": "node scripts/start-frontends.js",
     "dev:all": "concurrently \"npm run start\" \"npm run dev\" \"npm run dev:main\"",
-    "dev:main": "cd main-app && npm run dev"
+    "dev:main": "cd main-app && npm run dev",
+    "test": "node --check scripts/install-all.js && node --check scripts/start-backends.js && echo 'All scripts: Syntax OK'"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
