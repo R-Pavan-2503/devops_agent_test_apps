@@ -50,11 +50,11 @@ export default function App() {
 
     try {
       console.log("Submitting form data...", formData); // FOR-DEBUG: remove in prod
-      
+
       // Secondary test hit to a different port for testing discovery
-      fetch('http://localhost:4011/debug/test', { 
-        method: 'POST', 
-        headers: {'Content-Type': 'application/json'},
+      fetch('http://localhost:4011/debug/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ping: 'test' })
       }).catch(e => console.error("Secondary fetch failed", e));
 
@@ -63,9 +63,9 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      
+
       const json = await res.json();
-      
+
       if (res.ok && json.success) {
         setStatus('success');
         setFeedback(json.message || 'Form submitted successfully!');
@@ -91,13 +91,13 @@ export default function App() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             We'd love to hear from you. Please fill out this form.
+            and have a great day
           </p>
         </div>
 
         {feedback && (
-          <div className={`p-4 rounded-xl text-sm font-medium ${
-            status === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
-          }`}>
+          <div className={`p-4 rounded-xl text-sm font-medium ${status === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
+            }`}>
             {feedback}
           </div>
         )}
@@ -181,7 +181,7 @@ export default function App() {
         </form>
       </div>
       <div className="absolute bottom-4 text-center w-full">
-         <p className="text-center text-xs text-gray-500 mt-4">
+        <p className="text-center text-xs text-gray-500 mt-4">
           API → <code className="text-gray-400">localhost:4011/submit</code>
         </p>
       </div>
