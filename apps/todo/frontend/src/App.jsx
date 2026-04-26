@@ -53,7 +53,13 @@ function useTodos() {
     await fetch(API, { method: 'DELETE' });
   };
 
-  return { todos, loading, error, add, toggle, remove, clearCompleted, reload: load };
+  const clearAll = async () => {
+    if (!window.confirm('Are you sure you want to delete EVERY task?')) return;
+    setTodos([]);
+    await fetch(`${API}/all`, { method: 'DELETE' });
+  };
+
+  return { todos, loading, error, add, toggle, remove, clearCompleted, clearAll, reload: load };
 }
 
 // ─── TodoItem ───────────────────────────────────────────────────────
@@ -206,7 +212,7 @@ function FilterTabs({ filter, setFilter, counts }) {
 }
 
 // ─── Stats Bar ──────────────────────────────────────────────────────
-function StatsBar({ todos, onClearCompleted }) {
+function StatsBar({ todos, onClearCompleted, onClearAll }) {
   const done = todos.filter(t => t.completed).length;
   const pct  = todos.length ? Math.round((done / todos.length) * 100) : 0;
 
@@ -224,15 +230,24 @@ function StatsBar({ todos, onClearCompleted }) {
             style={{ width: `${pct}%` }}
           />
         </div>
-        {done > 0 && (
+        <div className="flex gap-2">
+          {done > 0 && (
+            <button
+              id="clear-completed-btn"
+              onClick={onClearCompleted}
+              className="text-xs text-gray-500 hover:text-yellow-400 transition-colors duration-150"
+            >
+              Clear done
+            </button>
+          )}
           <button
-            id="clear-completed-btn"
-            onClick={onClearCompleted}
+            id="clear-all-btn"
+            onClick={onClearAll}
             className="text-xs text-gray-500 hover:text-red-400 transition-colors duration-150"
           >
-            Clear done
+            Clear all
           </button>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -317,7 +332,11 @@ export default function App() {
 
           {/* Stats */}
           {!loading && todos.length > 0 && (
-            <StatsBar todos={todos} onClearCompleted={clearCompleted} />
+            <StatsBar 
+              todos={todos} 
+              onClearCompleted={clearCompleted} 
+              onClearAll={clearAll} 
+            />
           )}
         </div>
 
