@@ -87,7 +87,7 @@ export default function App() {
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
         <div>
           <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900">
-            Contact Us
+            Contact Us and everyone
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             We'd love to hear from you. Please fill out this form.
