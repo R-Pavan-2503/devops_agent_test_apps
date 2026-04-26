@@ -49,14 +49,23 @@ export default function App() {
     setFeedback(null);
 
     try {
+      console.log("Submitting form data...", formData); // FOR-DEBUG: remove in prod
+
+      // Secondary test hit to a different port for testing discovery
+      fetch('http://localhost:4011/debug/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ping: 'test' })
+      }).catch(e => console.error("Secondary fetch failed", e));
+
       const res = await fetch(API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      
+
       const json = await res.json();
-      
+
       if (res.ok && json.success) {
         setStatus('success');
         setFeedback(json.message || 'Form submitted successfully!');
@@ -78,17 +87,22 @@ export default function App() {
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
         <div>
           <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900">
-            Contact Us
+            Contact Us and everyone
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             We'd love to hear from you. Please fill out this form.
+            and have a great day
+            Testign again
+            tesgin once again the dahsbaord
+            agiona dna gain again agin
+            again dn agian adhf aweourysejhf sdiuh
+            dsjyfghjsd sdfjyhdsfjk dsfkjhsdf fdksjfhs
           </p>
         </div>
 
         {feedback && (
-          <div className={`p-4 rounded-xl text-sm font-medium ${
-            status === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
-          }`}>
+          <div className={`p-4 rounded-xl text-sm font-medium ${status === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
+            }`}>
             {feedback}
           </div>
         )}
@@ -172,7 +186,7 @@ export default function App() {
         </form>
       </div>
       <div className="absolute bottom-4 text-center w-full">
-         <p className="text-center text-xs text-gray-500 mt-4">
+        <p className="text-center text-xs text-gray-500 mt-4">
           API → <code className="text-gray-400">localhost:4011/submit</code>
         </p>
       </div>

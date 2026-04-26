@@ -21,9 +21,9 @@ app.use(cors({
 
 // ── In-Memory Store ────────────────────────────────────────────────
 let todos = [
-  { id: uuid(), text: 'Try adding a new task ✏️',   completed: false, createdAt: new Date().toISOString() },
-  { id: uuid(), text: 'Mark a task as complete ✅',  completed: false, createdAt: new Date().toISOString() },
-  { id: uuid(), text: 'Delete a finished task 🗑️',  completed: true,  createdAt: new Date().toISOString() },
+  { id: uuid(), text: 'Try adding a new task ✏️',   completed: false, priority: 'medium', createdAt: new Date().toISOString() },
+  { id: uuid(), text: 'Mark a task as complete ✅',  completed: false, priority: 'high',   createdAt: new Date().toISOString() },
+  { id: uuid(), text: 'Delete a finished task 🗑️',  completed: true,  priority: 'low',    createdAt: new Date().toISOString() },
 ];
 
 // ── Routes ─────────────────────────────────────────────────────────
@@ -35,14 +35,19 @@ app.get('/todos', (req, res) => {
 
 /** POST /todos — create a new todo */
 app.post('/todos', (req, res) => {
-  const { text } = req.body;
+  const { text, priority } = req.body;
   if (!text || typeof text !== 'string' || !text.trim()) {
     return res.status(400).json({ success: false, error: 'text is required' });
   }
+  
+  const validPriorities = ['low', 'medium', 'high'];
+  const todoPriority = validPriorities.includes(priority) ? priority : 'medium';
+
   const todo = {
     id: uuid(),
     text: text.trim(),
     completed: false,
+    priority: todoPriority,
     createdAt: new Date().toISOString(),
   };
   todos.unshift(todo);
@@ -54,8 +59,11 @@ app.patch('/todos/:id', (req, res) => {
   const todo = todos.find(t => t.id === req.params.id);
   if (!todo) return res.status(404).json({ success: false, error: 'Not found' });
 
+  const validPriorities = ['low', 'medium', 'high'];
+
   if (typeof req.body.completed === 'boolean') todo.completed = req.body.completed;
   if (typeof req.body.text === 'string' && req.body.text.trim()) todo.text = req.body.text.trim();
+  if (validPriorities.includes(req.body.priority)) todo.priority = req.body.priority;
 
   res.json({ success: true, data: todo });
 });
