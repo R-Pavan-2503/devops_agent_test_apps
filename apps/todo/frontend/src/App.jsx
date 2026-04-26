@@ -53,6 +53,7 @@ function useTodos() {
     await fetch(API, { method: 'DELETE' });
   };
 
+  // Test-1 : clear all functionality
   const clearAll = async () => {
     if (!window.confirm('Are you sure you want to delete EVERY task?')) return;
     setTodos([]);
