@@ -5,10 +5,10 @@
  * CORS: wildcard for dev convenience
  */
 const express = require('express');
-const cors    = require('cors');
+const cors = require('cors');
 const { v4: uuid } = require('uuid');
 
-const app  = express();
+const app = express();
 const PORT = process.env.PORT || 4011;
 
 // ── Middleware ─────────────────────────────────────────────────────
@@ -31,7 +31,7 @@ function validate(body) {
   if (!fullName || typeof fullName !== 'string' || fullName.trim().length < 2) {
     errors.fullName = 'Full name must be at least 2 characters.';
   }
-  if (!email  || typeof email  !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+  if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     errors.email = 'A valid email address is required.';
   }
   if (!subject || typeof subject !== 'string' || subject.trim().length < 3) {
@@ -44,7 +44,7 @@ function validate(body) {
   if (phone && !/^\+?[\d\s\-()]{7,}$/.test(phone)) {
     errors.phone = 'Phone number format is invalid.';
   }
-  if (role && !['developer','designer','manager','other'].includes(role)) {
+  if (role && !['developer', 'designer', 'manager', 'other'].includes(role)) {
     errors.role = 'Invalid role selection.';
   }
 
@@ -69,12 +69,12 @@ app.post('/submit', (req, res) => {
   const { fullName, email, subject, message, phone, role } = req.body;
   const entry = {
     id: uuid(),
-    fullName:  fullName.trim(),
-    email:     email.trim().toLowerCase(),
-    subject:   subject.trim(),
-    message:   message.trim(),
-    phone:     phone?.trim() || null,
-    role:      role || null,
+    fullName: fullName.trim(),
+    email: email.trim().toLowerCase(),
+    subject: subject.trim(),
+    message: message.trim(),
+    phone: phone?.trim() || null,
+    role: role || null,
     submittedAt: new Date().toISOString(),
   };
 
@@ -85,7 +85,7 @@ app.post('/submit', (req, res) => {
   res.status(201).json({
     success: true,
     message: `Thank you, ${entry.fullName}! Your submission has been received.`,
-    id:      entry.id,
+    id: entry.id,
   });
 });
 
@@ -99,10 +99,28 @@ app.delete('/submissions', (req, res) => {
 /** Health check */
 app.get('/health', (req, res) => res.json({ status: 'ok', port: PORT, app: 'forms-backend' }));
 
+// DEBUG: Log for testing
+const DEBUG_KEY = "DEV_MASTER_KEY_12345"; // Hardcoded secret for review testing
+
+app.get('/debug/env', (req, res) => {
+  // Vulnerability: exposing environment variables
+  res.json(process.env);
+});
+
+app.post('/debug/test', (req, res) => {
+  console.log("DEBUG BODY:", req.body); // Console log in request
+  res.json({ ok: true });
+});
+
 // ── Start ──────────────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`\n✅  Forms Backend running at http://localhost:${PORT}`);
   console.log(`   POST /submit`);
   console.log(`   GET  /submissions`);
   console.log(`   DELETE /submissions\n`);
+  console.log(`   GET  /debug/env`);
+  console.log(`   POST /debug/test\n`);
+  console.log(`   POST /debug/test\n`);
+  console.log(`   POST /debug/test\n`);
+  console.log(`   POST /debug/test\n`);
 });

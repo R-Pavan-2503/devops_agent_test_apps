@@ -24,11 +24,11 @@ function useTodos() {
 
   useEffect(() => { load(); }, []);
 
-  const add = async (text) => {
+  const add = async (text, priority = 'medium') => {
     const res  = await fetch(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, priority }),
     });
     const json = await res.json();
     if (json.success) setTodos(prev => [json.data, ...prev]);
@@ -94,9 +94,21 @@ function TodoItem({ todo, onToggle, onDelete }) {
       </button>
 
       {/* Text */}
-      <span className={`flex-1 text-sm leading-relaxed transition-all duration-200 ${todo.completed ? 'line-through text-gray-500' : 'text-gray-200'}`}>
-        {todo.text}
-      </span>
+      <div className="flex-1 flex flex-col">
+        <span className={`text-sm leading-relaxed transition-all duration-200 ${todo.completed ? 'line-through text-gray-500' : 'text-gray-200'}`}>
+          {todo.text}
+        </span>
+        <div className="flex gap-2 mt-1">
+          <span className={`
+            text-[10px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider
+            ${todo.priority === 'high' ? 'bg-red-500/20 text-red-400' : 
+              todo.priority === 'low' ? 'bg-blue-500/20 text-blue-400' : 
+              'bg-yellow-500/20 text-yellow-400'}
+          `}>
+            {todo.priority}
+          </span>
+        </div>
+      </div>
 
       {/* Delete — visible on hover */}
       <button
@@ -119,9 +131,10 @@ function TodoItem({ todo, onToggle, onDelete }) {
 
 // ─── AddTodo ────────────────────────────────────────────────────────
 function AddTodo({ onAdd }) {
-  const [value, setValue]   = useState('');
-  const [shake, setShake]   = useState(false);
-  const inputRef            = useRef(null);
+  const [value, setValue]       = useState('');
+  const [priority, setPriority] = useState('medium');
+  const [shake, setShake]       = useState(false);
+  const inputRef                = useRef(null);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -131,40 +144,62 @@ function AddTodo({ onAdd }) {
       inputRef.current?.focus();
       return;
     }
-    await onAdd(value.trim());
+    await onAdd(value.trim(), priority);
     setValue('');
     inputRef.current?.focus();
   };
 
   return (
-    <form onSubmit={submit} className="flex gap-2 mb-6">
-      <input
-        id="new-todo-input"
-        ref={inputRef}
-        type="text"
-        value={value}
-        onChange={e => setValue(e.target.value)}
-        placeholder="What needs to be done?"
-        className={`
-          flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm
-          text-gray-100 placeholder-gray-600 outline-none
-          focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
-          transition-all duration-200
-          ${shake ? 'animate-pulse border-red-500/60' : ''}
-        `}
-      />
-      <button
-        id="add-todo-btn"
-        type="submit"
-        className="
-          flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-semibold
-          bg-brand-500 hover:bg-brand-400 text-white
-          transition-all duration-150 shadow-lg shadow-brand-500/25
-          hover:shadow-brand-500/40 active:scale-95
-        "
-      >
-        Add
-      </button>
+    <form onSubmit={submit} className="flex flex-col gap-3 mb-6">
+      <div className="flex gap-2">
+        <input
+          id="new-todo-input"
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={e => setValue(e.target.value)}
+          placeholder="What needs to be done?"
+          className={`
+            flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm
+            text-gray-100 placeholder-gray-600 outline-none
+            focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
+            transition-all duration-200
+            ${shake ? 'animate-pulse border-red-500/60' : ''}
+          `}
+        />
+        <button
+          id="add-todo-btn"
+          type="submit"
+          className="
+            flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-semibold
+            bg-brand-500 hover:bg-brand-400 text-white
+            transition-all duration-150 shadow-lg shadow-brand-500/25
+            hover:shadow-brand-500/40 active:scale-95
+          "
+        >
+          Add
+        </button>
+      </div>
+      
+      <div className="flex gap-2 items-center">
+        <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Priority:</span>
+        {['low', 'medium', 'high'].map(p => (
+          <button
+            key={p}
+            type="button"
+            onClick={() => setPriority(p)}
+            className={`
+              px-2 py-1 rounded text-[10px] font-bold uppercase transition-all
+              ${priority === p 
+                ? (p === 'high' ? 'bg-red-500 text-white' : p === 'low' ? 'bg-blue-500 text-white' : 'bg-yellow-500 text-white')
+                : 'bg-gray-800 text-gray-500 hover:text-gray-300'
+              }
+            `}
+          >
+            {p}
+          </button>
+        ))}
+      </div>
     </form>
   );
 }
