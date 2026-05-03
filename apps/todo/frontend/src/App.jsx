@@ -57,6 +57,7 @@ function useTodos() {
   // Test-2
   // dashboard - test 1
   // dashboard - test 2
+  // dashboard - test 3
   const clearAll = async () => {
     if (!window.confirm('Are you sure you want to delete EVERY task?')) return;
     setTodos([]);
