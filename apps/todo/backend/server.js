@@ -68,6 +68,13 @@ app.delete('/todos/:id', (req, res) => {
   res.json({ success: true, message: 'Deleted' });
 });
 
+/** DELETE /todos/all — clear everything */
+app.delete('/todos/all', (req, res) => {
+  const count = todos.length;
+  todos = [];
+  res.json({ success: true, message: `Cleared all ${count} todo(s)` });
+});
+
 /** DELETE /todos — clear all completed */
 app.delete('/todos', (req, res) => {
   const removed = todos.filter(t => t.completed).length;
