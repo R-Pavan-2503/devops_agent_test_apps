@@ -20,7 +20,7 @@ export default function App() {
       console.error("Failed to fetch expenses");
     }
   };
-
+  // aDDING EXPENSE
   const addExpense = async (e) => {
     e.preventDefault();
     if (!name || !amount) return;
@@ -47,19 +47,19 @@ export default function App() {
   return (
     <div style={{ padding: '20px', maxWidth: '400px', margin: 'auto', fontFamily: 'sans-serif' }}>
       <h1 style={{ textAlign: 'center' }}>Expense Tracker</h1>
-      
+
       <form onSubmit={addExpense} style={{ marginBottom: '20px' }}>
-        <input 
-          placeholder="Expense Name" 
-          value={name} 
-          onChange={e => setName(e.target.value)} 
+        <input
+          placeholder="Expense Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
           style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
-        <input 
-          type="number" 
-          placeholder="Amount" 
-          value={amount} 
-          onChange={e => setAmount(e.target.value)} 
+        <input
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={e => setAmount(e.target.value)}
           style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
         <button type="submit" style={{ width: '100%', padding: '10px', cursor: 'pointer' }}>Add Expense</button>

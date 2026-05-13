@@ -21,7 +21,7 @@ function Brand() {
     <div className="brand">
       <div className="brand-icon">⚡</div>
       <div>
-        <div className="brand-name">AppHub</div>
+        <div className="brand-name">App Hub</div>
         <div className="brand-sub">Multi-App Platform</div>
       </div>
     </div>
