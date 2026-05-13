@@ -21,6 +21,7 @@ export default function App() {
     }
   };
   // aDDING EXPENSE
+  // test 3: adding a comment
   const addExpense = async (e) => {
     e.preventDefault();
     if (!name || !amount) return;
