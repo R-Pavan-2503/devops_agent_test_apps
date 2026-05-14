@@ -1,0 +1,16 @@
+{
+  "name": "expense-tracker-backend",
+  "version": "1.0.0",
+  "private": true,
+  "port": 4031,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --check server.js && echo 'Syntax OK'"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "uuid": "^9.0.1"
+  }
+}
